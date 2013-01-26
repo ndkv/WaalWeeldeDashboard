@@ -1,0 +1,51 @@
+<!doctype html>
+ 
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>WaalWeelde Dashboard uiterwaardenbeheer</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAGCbrlT5i7NatFI6qX-tc8ZkQEF7HrU9Q&sensor=false"></script>
+	<script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript" src="../lib/proj4js-combined.js"></script>
+</head>
+<body>
+
+<div id="header">
+    <div id="logo"><img src="media/waalweelde_logo.png" /></div>
+    <div id="title"><h1>Dashboard WaalWeelde uiterwaardenbeheer</h1></div>
+</div>
+
+
+<div id="draggable" class="ui-widget-content">
+		<p class="ui-widget-header">Google Maps - Terrain</p>
+		<div id="map" class="map"></div>
+</div>
+ 
+ <div id="draggable2" class="ui-widget-content">
+	<p class="ui-widget-header">Google Maps - Satellite</p>
+	<div id="map2" class="map"></div>
+</div>
+ 
+  <div id="draggable3" class="ui-widget-content">
+	<p class="ui-widget-header">Nederland 17de eeuw</p>
+	<div id="map3" class="map"></div>
+</div>
+
+<div id="draggable4" class="ui-widget-content">
+	<p class="ui-widget-header">Topografische kaart + NAT</p>
+	<div id="map4" class="map"></div>
+</div>
+
+<div id="draggable5" class="ui-widget-content">
+	<p class="ui-widget-header">Random getallenreeks</p>
+    <div id="container"></div>
+</div>
+
+</body>
+</html>
