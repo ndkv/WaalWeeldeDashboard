@@ -8,10 +8,27 @@
     text-align: center;
 }
 
+p.ui-widget-header {
+    cursor: move;
+}
+
 #tabs-2 {height: 600px;}
 
 body {background-color: #d2e1e7; }
 
-.map { width: 300px; height: 250px;}
+.map {
+    width: 300px; 
+    height: 250px;
+    overflow: auto; 
+}
 
 .container {width: 300px;}
+
+.close-button {
+    float: right;
+    border-style: solid;
+    border-width: 1px;
+    margin: 2px;
+    padding: 2px;
+    cursor: pointer;
+}
