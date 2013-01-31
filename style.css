@@ -1,5 +1,36 @@
+.styled-select {
+   width: 240px;
+   height: 34px;
+   overflow: hidden;
+   background: url(media/down_arrow_select.jpg) no-repeat right #ddd;
+   border: 1px solid #ccc;
+   display: inline-block;
+}
+
+.styled-select select {
+   background: transparent;
+   width: 268px;
+   padding: 5px;
+   font-size: 16px;
+   line-height: 1;
+   border: 0;
+   border-radius: 0;
+   height: 34px;
+   -webkit-appearance: none;
+}   
+   
 .ui-widget-content {padding: 10px;}
 .ui-widget {font-size: 0.9em;} 
+
+.content {
+	width: 100%;
+}
+	
+.legend {
+	float:left;
+	padding-right: 10px;
+	overflow: auto;
+}
 
 .ui-widget-header {
     height: 34px;
@@ -17,12 +48,16 @@ p.ui-widget-header {
 body {background-color: #d2e1e7; }
 
 .map {
-    width: 100%; 
+	width: 400px;
     height: 250px;
     overflow: auto; 
+	float: right;
 }
 
-.container {width: 400px;}
+.container {
+	width: 400px;
+	position: absolute;
+}
 
 .close-button {
     float: right;
@@ -40,8 +75,9 @@ body {background-color: #d2e1e7; }
 }
 
 #toolbar {
-    position: relative;
-    left: -20px;
+    margin-left: auto;
+	margin-right: auto;
+	width: 500px;
 }
 
 #header {
@@ -50,4 +86,16 @@ body {background-color: #d2e1e7; }
 
 #header div {
     float: left;
+}
+
+#map_toolbar {
+	height: 25px;
+}	
+
+#layer-selector {
+	float: left;
+}
+
+#widget-selector {
+	float: right;
 }
