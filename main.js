@@ -1,7 +1,9 @@
 var MapControl = function() {
-	this.maps = {};
+    this.maps = [];
     this.map_count = 0;
-	Proj4js.defs["EPSG:28992"] = "+title=Amersfoort / RD New +proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs";
+    this.lockList = [];
+
+    Proj4js.defs["EPSG:28992"] = "+title=Amersfoort / RD New +proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs";
     this.initialize = true;
 	
 	this.map_store = {
@@ -37,8 +39,8 @@ var MapControl = function() {
     };
 
 	this.addMap = function(map_params, t, left) {	
-		this.map_count++;
 		var map_id = this.map_count;
+		this.map_count++;
 		
 		wms_url = map_params.url;
 		styles = map_params.style;
@@ -51,39 +53,71 @@ var MapControl = function() {
         var map_toolbar = $('<div id="map_toolbar"></div>').appendTo(map_container);
         map_toolbar.append('<div class="legend" id="legend_button'+map_id+'">Legenda</div>');
         map_toolbar.append('<div class="close-button"  id="close'+map_id+'">Close</div>')
-		var content = $('<div class="content"></div>').appendTo(map_container);
-		content.append('<div class="legend" id="legend'+map_id+'"></div>');
+	map_toolbar.append('<input type="checkbox" id="lock'+ map_id +'" /><label for="lock'+ map_id + '">Lock</label>');
+	var content = $('<div class="content"></div>').appendTo(map_container);
+	content.append('<div class="legend" id="legend'+map_id+'"></div>');
         content.append('<div id="map'+map_id+'" class="map"></div></div>');
-		map_container.draggable({stack:".ui-widget-content", cancel:"#map"+map_id }).resizable({stop: function(){map.updateSize();}, alsoResize: "#map"+map_id});
+	map_container.draggable({stack:".ui-widget-content", cancel:"#map"+map_id }).resizable({stop: function(){map.updateSize();}, alsoResize: "#map"+map_id});
 
         map_container.css("top", t+"px");
         map_container.css("left", left+"px");
-        
-        $("#close"+map_id).click(function(event) {
+       
+
+	//map toolbar buttons
+	//close
+        $("#close"+map_id).button().click(function(event) {
            $(this).parent().parent().remove();
         });
 
+	//legend
         var that = this;
         $("#legend_button"+map_id).click(function(event) {
             return function () {
+		//TODO: pass content object instead
                 that.addLegend(layer_title, styles, map_id);
             }()
         });
 
-		var map = new OpenLayers.Map('map'+map_id, {
-		  maxResolution: 1226.5625,
-		  maxExtent: new OpenLayers.Bounds(10000.0, 305000.0, 280000.0, 619000.0),
-		  projection: new OpenLayers.Projection("EPSG:28992")
-		});
+	//lock
+	
+
+	//map and layers
+	var map = new OpenLayers.Map('map'+map_id, {
+	    maxResolution: 1226.5625,
+	    maxExtent: new OpenLayers.Bounds(10000.0, 305000.0, 280000.0, 619000.0),
+	    projection: new OpenLayers.Projection("EPSG:28992")
+	});
+
+	map.events.register('moveend', map, function(e) {
+		return function() {
+		    that.centerMaps(e, map_id, that);
+		}()
+	});
+
+	//TODO: add remove functionality
+        this.maps.push(map);
+
+        $("#lock"+map_id).button().click(function(event) {
+            return function() {
+		if (that.lockList.indexOf(map_id) === -1) {
+		    that.lockList.push(map_id);
+		    $('#lock'+map_id).attr('checked', true)
+		} else {
+		    that.lockList.splice(that.lockList.indexOf(map_id), 1);
+		    $('#lock'+map_id).attr('checked', false);
+		};	
 		
-		map.events.register('moveend'
-		
-		var layer = new OpenLayers.Layer.WMS(
-			"OpenLayers WMS",
-			wms_url,
-			{layers:layer_name, format: "image/png", srs:"EPSG:28992", styles:styles}, {singleTile:false, ratio: 1});
-		map.addLayer(layer);
-		map.zoomToMaxExtent();		
+		console.log(that.lockList);
+	    }();
+        });
+
+	
+	var layer = new OpenLayers.Layer.WMS(
+		"OpenLayers WMS",
+		wms_url,
+		{layers:layer_name, format: "image/png", srs:"EPSG:28992", styles:styles}, {singleTile:false, ratio: 1});
+	map.addLayer(layer);
+	map.zoomToMaxExtent();		
 
 51.870927,6.066243
 
@@ -91,7 +125,6 @@ var MapControl = function() {
         var transformed = center.clone().transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:28992"));
         map.setCenter(transformed, 6);
 
-        this.maps[map_id] = map;
 	};
 
     this.addLegend = function(layer_name, style, map_id) {
@@ -128,6 +161,18 @@ var MapControl = function() {
 		}
 			
 		$(':nth-child(1)', $('select')).attr('selected', 'selected');
+	};
+
+	this.centerMaps = function(event, map_id, that) {
+	    if (that.lockList.indexOf(map_id) !== -1) {
+	        var map = that.maps[map_id];
+		var center = map.getCenter()
+		var zoom = map.getZoom()
+ 	        for (var i=0;  i < that.lockList.length; i++) {
+		    that.maps[that.lockList[i]].setCenter(center);
+		    that.maps[that.lockList[i]].zoomTo(zoom);
+                }
+            }
 	};
 };
 

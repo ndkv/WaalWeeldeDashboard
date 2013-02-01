@@ -36,6 +36,7 @@
     height: 34px;
     margin-top: 0px;
     text-align: center;
+    margin-bottom: 5px;
 }
 
 p.ui-widget-header {
@@ -61,11 +62,6 @@ body {background-color: #d2e1e7; }
 
 .close-button {
     float: right;
-    border-style: solid;
-    border-width: 1px;
-    margin: 2px;
-    padding: 2px;
-    cursor: pointer;
 }
 
 #add-map { 
@@ -89,7 +85,7 @@ body {background-color: #d2e1e7; }
 }
 
 #map_toolbar {
-	height: 25px;
+	height: 35px;
 }	
 
 #layer-selector {
@@ -98,4 +94,8 @@ body {background-color: #d2e1e7; }
 
 #widget-selector {
 	float: right;
+}
+
+.ui-button-text .ui-button-text-only {
+	padding: 4px;
 }
