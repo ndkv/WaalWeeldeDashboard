@@ -1,5 +1,5 @@
 .styled-select {
-   width: 240px;
+   width: 340px;
    height: 34px;
    overflow: hidden;
    background: url(media/down_arrow_select.jpg) no-repeat right #ddd;
@@ -9,10 +9,10 @@
 
 .styled-select select {
    background: transparent;
-   width: 268px;
+   width: 368px;
    padding: 5px;
    font-size: 16px;
-   line-height: 1;
+   line-height: 1.1;
    border: 0;
    border-radius: 0;
    height: 34px;
@@ -28,7 +28,6 @@
 	
 .legend {
 	float:left;
-	padding-right: 10px;
 	overflow: auto;
 }
 
@@ -44,7 +43,7 @@ p.ui-widget-header {
     height: 17px;
 }
 
-#tabs-2 {height: 600px;}
+#tabs-2 {height: 500px;}
 
 body {background-color: #d2e1e7; }
 
@@ -52,7 +51,7 @@ body {background-color: #d2e1e7; }
 	width: 400px;
     height: 250px;
     overflow: auto; 
-	float: right;
+	float: left;
 }
 
 .container {
@@ -73,7 +72,7 @@ body {background-color: #d2e1e7; }
 #toolbar {
     margin-left: auto;
 	margin-right: auto;
-	width: 500px;
+	width: 800px;
 }
 
 #header {
@@ -93,9 +92,27 @@ body {background-color: #d2e1e7; }
 }
 
 #widget-selector {
-	float: right;
+	float: left;
 }
 
 .ui-button-text .ui-button-text-only {
 	padding: 4px;
+}
+
+table {
+    font-size: 0.8em;
+    border-style: solid;
+    border-width: 1px;
+    margin-top: 20px;
+}
+
+th {
+    border-bottom-style: solid;
+    border-width: 1px;
+}
+
+.logger {
+    width: 100%;
+    overflow-y: scroll;
+    height: 223px;
 }

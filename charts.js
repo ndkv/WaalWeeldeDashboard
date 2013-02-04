@@ -1,29 +1,6 @@
 var PieChart = function(data_source) {
+    //TODO: make stand alone data source
     this.data_source = data_source;
-
-    this.createContainer = function () {
-        var t = 240;
-        var left = 240;
-        var map_id = 100;
-        var layer_title = "";
-
-        var container = $('<div id="draggable'+map_id+'"class="container ui-widget-content ">').appendTo("#tabs-2");
-        container.draggable({stack:".ui-widget-content"});
-        container.css("top", t+"px");
-        container.css("left", left+"px");
-        container.css("width", "800px");
-        container.css("height", "290px");
-        var toolbar = $('<div id="map_toolbar"></div>').appendTo(container);
-        toolbar.append('<div class="close-button"  id="close'+map_id+'">Close</div>')
-        var chart = $('<div id="chart"></div>').appendTo(container);
-        chart.css('height', '260px');
-
-        $("#close"+map_id).button().click(function(event) {
-            $(this).parent().parent().remove();
-        });
-
-        return chart;
-    };
 
     //0 ==> 2005
     this.data_sources = [
@@ -89,8 +66,10 @@ var PieChart = function(data_source) {
         return data_source;
     };
    
-    this.draw = function () { 
-        var renderTo = this.createContainer().attr('id');
+    this.draw = function () {
+        //calling GLOBAL widet_controller defined in main.js 
+        var renderTo = widget_controller.widgetContainer().attr('id');
+        console.log(renderTo);
         var data_source = this.determineDataSource();
         Highcharts.setOptions({
             global: {

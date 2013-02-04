@@ -13,6 +13,7 @@
     <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
     <script type="text/javascript" src="lib/proj4js-combined.js"></script>
     <script type="text/javascript" src="lib/highcharts.src.js"></script>
+    <script type="text/javascript" src="container.js"></script>
     <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript" src="charts.js"></script>
     <!--<script src="../lib/ext-3.4.0/adapter/ext/ext-base.js" type="text/javascript"></script>-->
@@ -30,40 +31,46 @@
 
 
 <div id="tabs">
-  <ul>
-    <li><a href="#tabs-1">Viewer</a></li>
-    <li><a href="#tabs-2">Dashboard</a></li>
-  </ul>
-  <div id="tabs-1">
+    <ul>
+        <li><a href="#tabs-1">Viewer</a></li>
+        <li><a href="#tabs-2">Dashboard</a></li>
+    </ul>
+    <div id="tabs-1">
         <!--<iframe style="border: none; width:100%; height:700px;"src="http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoexplorer/viewer/#maps/8"></iframe>-->
         <!--        <iframe src="http://waalweelde.geocat.net:80/geonetwork/srv/en/framedmap?wmc=http://waalweelde.geocat.net/geonetwork/srv/en/resources.get?uuid=9ce812ec-3e2f-44e6-84fc-becce56ee3de&fname=geonetwork-wmc600681172172275534.cml&access=private" style="width:100%;height:930px;" frameborder=0></iframe>-->
     
-        </div>
-  <div id="tabs-2">
-    <div id="toolbar">
-        <div>
-            <div class="styled-select">
-                <select id="map-selector">
-                <option value="">Voeg een kaart toe...</option>
-                <option value="ecotopen2005">Ecotopen 2005</option>
-                <option value="ecotopen2005_ruwheid">Ecotopen 2005 - Ruwheid</option>
-                <option value="ecotopen2005_biomassa">Ecotopen 2005 - Biomassa</option>
-                </select>
-            </div>
-            <div class="styled-select">
-                <select id="widget-selector">
-                <option value="">Voeg een widget toe...</option>
-                <option value="ecotopen2005_w">Oppervlakte ecotopen 2005</option>
-                <option value="ecotopen2005_ruwheid">Ecotopen 2005 - Ruwheid</option>
-                <option value="ecotopen2005_biomassa">Ecotopen 2005 - Biomassa</option>
-                </select>
+    </div>
+    <div id="tabs-2">
+        <div id="toolbar">
+            <div>
+                <div class="styled-select">
+                    <select id="map-selector">
+                    <option value="">Voeg een kaart toe...</option>
+                    <option></option>
+                    <option>-- Ecotopen tweede cyclus (2005) --</option>
+                    <option value="ecotopen2005">Ecotopen</option>
+                    <option value="ecotopen2005_ruwheid">Ruwheid</option>
+                    <option value="ecotopen2005_biomassa">Biomassa</option>
+                    <option></option>
+                    <option value="top10nl">Topografische kaart</option>
+                    </select>
+                </div>
+                <div class="styled-select">
+                    <select id="widget-selector">
+                    <option value="">Voeg een widget toe...</option>
+                    <option></option>
+                    <option >-- Ecotopen tweede cyclus (2005) -- </option>
+                    <option value="ecotopen2005_w">Ecotoop totale oppervlakte</option>
+                    <option></option>
+                    <option >-- FeatureInfo-- </option>
+                    <option value="log">Object attributen weergave</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
 </div>
-  </div>
 </div>
-
 
 
 </body>
