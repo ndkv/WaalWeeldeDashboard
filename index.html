@@ -10,6 +10,7 @@
     <!--<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>-->
     <script type="text/javascript" src="lib/jquery-ui-1.10.0/js/jquery-ui-1.10.0.custom.min.js"></script>
     <!--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAGCbrlT5i7NatFI6qX-tc8ZkQEF7HrU9Q&sensor=false"></script>-->
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
     <script type="text/javascript" src="lib/proj4js-combined.js"></script>
     <script type="text/javascript" src="lib/highcharts.src.js"></script>
@@ -36,9 +37,7 @@
         <li><a href="#tabs-2">Dashboard</a></li>
     </ul>
     <div id="tabs-1">
-        <!--<iframe style="border: none; width:100%; height:700px;"src="http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoexplorer/viewer/#maps/8"></iframe>-->
-        <!--        <iframe src="http://waalweelde.geocat.net:80/geonetwork/srv/en/framedmap?wmc=http://waalweelde.geocat.net/geonetwork/srv/en/resources.get?uuid=9ce812ec-3e2f-44e6-84fc-becce56ee3de&fname=geonetwork-wmc600681172172275534.cml&access=private" style="width:100%;height:930px;" frameborder=0></iframe>-->
-    
+        <iframe src="http://waalweelde.geocat.net:80/geonetwork/srv/en /srv/en/framedmap?wmc=http://waalweelde.geocat.net/geonetwork/srv/en/resources.get?uuid=14ac7f1d-ce8e-417e-bc27-3a30b7f6486b&fname=geonetwork-wmc1239577559148097178.cml&access=private" style="width:100%;height:930px;" frameborder=0></iframe>
     </div>
     <div id="tabs-2">
         <div id="toolbar">
@@ -46,21 +45,40 @@
                 <div class="styled-select">
                     <select id="map-selector">
                     <option value="">Voeg een kaart toe...</option>
+                    <option>-- Ecotopen eerste cyclus (1997) --</option>
+                    <option value="ecotopen1997">Vegetatiestructuur</option>
+                    <option value="ecotopen1997_ruwheid">Ruwheid</option>
+                    <option value="ecotopen1997_biomassa">Biomassa</option>
                     <option></option>
                     <option>-- Ecotopen tweede cyclus (2005) --</option>
-                    <option value="ecotopen2005">Ecotopen</option>
+                    <option value="ecotopen2005">Vegetatiestructuur</option>
                     <option value="ecotopen2005_ruwheid">Ruwheid</option>
                     <option value="ecotopen2005_biomassa">Biomassa</option>
                     <option></option>
-                    <option value="top10nl">Topografische kaart</option>
+                    <option>-- Ecotopen derde cyclus (2008) --</option>
+                    <option value="ecotopen2008">Vegetatiestructuur</option>
+                    <option value="ecotopen2008_ruwheid">Ruwheid</option>
+                    <option value="ecotopen2008_biomassa">Biomassa</option>
+                    <option></option>
+                    <option value="top25nl">Topografische kaart</option>
+                    <option value="satellite">NLR luchtfoto's</option>
+                    <option value="bebouwdeuiterwaard">Bebouwdeuiterwaard</option>
                     </select>
                 </div>
                 <div class="styled-select">
                     <select id="widget-selector">
                     <option value="">Voeg een widget toe...</option>
                     <option></option>
+                    <option >-- Ecotopen tweede cyclus (1997) -- </option>
+                    <option value="ecotopen1997_w">Ecotoop totale oppervlakte</option>
+                    <option></option>
                     <option >-- Ecotopen tweede cyclus (2005) -- </option>
                     <option value="ecotopen2005_w">Ecotoop totale oppervlakte</option>
+                    <option></option>
+                    <option >-- Ecotopen tweede cyclus (2008) -- </option>
+                    <option value="ecotopen2008_w">Ecotoop totale oppervlakte</option>
+                    <option></option>
+                    <option value="biomassa">Biomassa opbrengst</option>
                     <option></option>
                     <option >-- FeatureInfo-- </option>
                     <option value="log">Object attributen weergave</option>
