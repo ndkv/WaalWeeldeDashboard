@@ -1,7 +1,7 @@
 var ContainerWaalWeelde = function () {
     this.widget_id = 0;
 
-    this.mapContainer = function (layer_title, t, left) {
+    this.mapContainer = function (layer_title, t, left, legend) {
         var map_id = this.widget_id++;
         var t = t;
         var left = left;
@@ -17,9 +17,13 @@ var ContainerWaalWeelde = function () {
         
         map_container.append('<p class="ui-widget-header">'+layer_title+' </p>');
         var map_toolbar = $('<div id="map_toolbar"></div>').appendTo(map_container);
-        map_toolbar.append('<input type="checkbox" id="legend_button' + map_id + '" /><label for="legend_button' + map_id + '">Legenda</label>');
-        map_toolbar.append('<input type="checkbox" id="lock'+ map_id +'" /><label for="lock'+ map_id + '">Lock</label>');
-        map_toolbar.append('<div class="close-button"  id="close'+map_id+'">Close</div>')
+        
+        if (legend) {
+            map_toolbar.append('<input type="checkbox" id="legend_button' + map_id + '" /><label for="legend_button' + map_id + '">Legenda</label>');
+        };
+
+        map_toolbar.append('<input type="checkbox" id="lock'+ map_id +'" /><label for="lock'+ map_id + '">Op slot</label>');
+        map_toolbar.append('<div class="close-button"  id="close'+map_id+'">Sluit</div>')
         var content = $('<div class="content"></div>').appendTo(map_container);
         //TODO ------ to here
     

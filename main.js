@@ -16,76 +16,90 @@ var MapControl = function () {
     Proj4js.defs["EPSG:28992"] = "+title=Amersfoort / RD New +proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs";
 
     this.initialized = false;
+
+    this.amazon_serv = 'http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?';
+//    this.amazon_serv = 'http://ec2-54-234-190-236.compute-1.amazonaws.com:8080/geoserver/wms?'; 
     this.map_store = {
         top25nl: {
             url: "http://mapsrv.ubvu.vu.nl/proxy/pub/service?",
             layer: "Top 25 raster (2009)_top_raster",
-            title: "TOP25NL"
+            title: "TOP25NL" 
         },
         ecotopen2008: {
-            url: "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?",
+            url: this.amazon_serv,
             layer: "ecotopen:ecotopen_2008",
             title: "Vegetatiestructuur 2008",
-            style: "vegetatiestructuur"
+            style: "vegetatiestructuur",
+            legend: true
         },
         ecotopen2008_ruwheid: {
-            url: "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?",
+            url: this.amazon_serv,
             layer: "ecotopen:ecotopen_2008",
             title: "Ruwheid 2008",
-            style: "ruwheid_2008"
+            style: "ruwheid_2008",
+            legend: true
         },
         ecotopen2008_biomassa: {
-            url: "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?",
+            url: this.amazon_serv,
             layer: "ecotopen:ecotopen_2008",
             title: "Biomassa 2008",
-            style: "biomassa_2008"
+            style: "biomassa_2008",
+            legend: true
         },
         ecotopen2005: {
-            url: "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?",
+            url: this.amazon_serv,
             layer: "ecotopen:ecotopen_2005",
             title: "Vegetatiestructuur 2005",
-            style: "vegetatiestructuur"
+            style: "vegetatiestructuur",
+            legend: true
         },
         ecotopen2005_ruwheid: {
-            url: "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?",
+            url: this.amazon_serv,
             layer: "ecotopen:ecotopen_2005",
             title: "Ruwheid 2005",
-            style: "ruwheid_2005"
+            style: "ruwheid_2005",
+            legend: true
         },
         ecotopen2005_biomassa: {
-            url: "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?",
+            url: this.amazon_serv,
             layer: "ecotopen:ecotopen_2005",
             title: "Biomassa 2005",
-            style: "biomassa_2005"
+            style: "biomassa_2005",
+            legend: true
         },
         ecotopen1997: {
-            url: "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?",
+            url: this.amazon_serv,
             layer: "ecotopen:ecotopen_1997",
             title: "Vegetatiestructuur 1997",
-            style: "vegetatiestructuur"
+            style: "vegetatiestructuur",
+            legend: true
         },
         ecotopen1997_ruwheid: {
-            url: "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?",
+            url: this.amazon_serv,
             layer: "ecotopen:ecotopen_1997",
             title: "Ruwheid 1997",
-            style: "ruwheid_1997"
+            style: "ruwheid_1997",
+            legend: true
         },
         ecotopen1997_biomassa: {
-            url: "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?",
+            url: this.amazon_serv,
             layer: "ecotopen:ecotopen_1997",
             title: "Biomassa 1997",
-            style: "biomassa_1997"
+            style: "biomassa_1997",
+            legend: true
         },
         bebouwdeuiterwaard: {
-            url: "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?",
+            url: this.amazon_serv,
             layer: "ecotopen:ecotopen_2005",
             title: "Bebouwde uiterwaard",
-            style: "bebouwdeuiterwaard"
+            style: "bebouwdeuiterwaard",
+            legend: true
         },
         satellite: {
             url: "http://gdsc.nlr.nl/wms/dkln2006",
             layer: "dkln2006-1m",
-            title: "NLR luchtfoto's 2006"
+            title: "NLR luchtfoto's 2006",
+            legend: false
             //http://gdsc.nlr.nl/wms/dkln2006?LAYERS=dkln2006-1m&TRANSPARENT=TRUE&VERSION=1.1.1&FORMAT=image%2Fpng&SERVICE=WMS&REQUEST=GetMap&STYLES=&SRS=EPSG%3A28992&BBOX=185750.72,429023.68,185965.76,429238.72&WIDTH=256&HEIGHT=256
         }
     };
@@ -109,7 +123,7 @@ var MapControl = function () {
 //        wms_url_proxied = 'http://localhost:8000/__ajaxproxy/' + wms_url
         
 
-        var cont = widget_controller.mapContainer(layer_title, t, left);
+        var cont = widget_controller.mapContainer(layer_title, t, left, map_params.legend);
         var map_id = cont[0];
         var map_container = cont[1];
 
@@ -142,7 +156,7 @@ var MapControl = function () {
             $('#legend'+ map_id +' img');
             return function () {
             //TODO: pass content object instead
-                that.addLegend(layer_title, styles, map_id, map);
+                that.addLegend(layer_title, styles, map_id, map, wms_url);
             }()
         });
 
@@ -232,10 +246,10 @@ var MapControl = function () {
         graticuleCtl1.activate();
 };
 
-    this.addLegend = function(layer_name, style, map_id, map) {
+    this.addLegend = function(layer_name, style, map_id, map, wms_url) {
         var proxy = 'http://waalweelde.ndkv.nl/proxy.cgi?url='
 //        var proxy = "http://localhost:8000/__ajaxproxy/"
-        var url = proxy + "http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?request=getCapabilities";
+        var url = proxy + wms_url + 'request=getCapabilities';
         var parseXML = function() {
             return function(xml, testStatus) {
                 var legend_url = $("Name:contains('"+style+"')", xml).filter(function(index) {return $(this).text() === style}).siblings("LegendURL").children("OnlineResource").get(0).attributes[2].nodeValue;
@@ -368,5 +382,10 @@ $(document).ready(function() {
     $('#map-selector').change(function (event) {
         map_control.mapComposer($(this).val());
     });
-    
+
+
+//tracking
+
+
+
 });
