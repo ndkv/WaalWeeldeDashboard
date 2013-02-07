@@ -7,7 +7,7 @@ Developed as part of the NWO_ project SDI4URD_ for the VerDuS_ project  `Urban R
 
 .. _NWO: http://www.nwo.nl
 
-.. _Urban Regions in the Delta Oost: http://www.google.com
+.. _Urban Regions in the Delta Oost: http://deltaoost.verdus.nl/voorpagina.asp?id=11
 
 .. _VerDuS: http://www.verdus.nl/voorpagina.asp
 
