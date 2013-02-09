@@ -1,4 +1,4 @@
-var ContainerWaalWeelde = function () {
+define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
     this.widget_id = 0;
 
     this.mapContainer = function (layer_title, t, left, legend) {
@@ -38,7 +38,6 @@ var ContainerWaalWeelde = function () {
         //legend
 
         return [map_id, map_container];
-
 
     }
 
@@ -116,4 +115,5 @@ var ContainerWaalWeelde = function () {
         return table;
 
     }
-};
+}
+})

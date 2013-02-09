@@ -1,5 +1,5 @@
 .styled-select {
-   width: 340px;
+   width: 285;
    height: 34px;
    overflow: hidden;
    background: url(media/down_arrow_select.jpg) no-repeat right #ddd;
@@ -9,7 +9,7 @@
 
 .styled-select select {
    background: transparent;
-   width: 368px;
+   width: 285px;
    padding: 5px;
    font-size: 16px;
    line-height: 1.1;
@@ -72,7 +72,7 @@ body {background-color: #d2e1e7; }
 #toolbar {
     margin-left: auto;
 	margin-right: auto;
-	width: 800px;
+	width: 1035px;
 }
 
 #header {
@@ -87,13 +87,10 @@ body {background-color: #d2e1e7; }
 	height: 35px;
 }	
 
-#map-selector {
-	float: left;
+.selector {
+    float: left;
 }
 
-#widget-selector {
-	float: left;
-}
 
 .ui-button-text .ui-button-text-only {
 	padding: 4px;

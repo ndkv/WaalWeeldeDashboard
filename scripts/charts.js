@@ -1,4 +1,5 @@
-var PieChart = function(data_source) {
+define(["lib/highcharts"], function () { 
+    return function(data_source) {
     //TODO: make stand alone data source
     this.data_source = data_source;
 
@@ -78,14 +79,9 @@ var PieChart = function(data_source) {
     this.draw = function () {
         //calling GLOBAL widet_controller defined in main.js 
         var renderTo = widget_controller.widgetContainer().attr('id');
-        console.log(renderTo);
         var data_source = this.determineDataSource();
         var title = 'Vegetatiestructuur totale oppervlakte' + this.data_source.split("_")[1];
-        Highcharts.setOptions({
-            global: {
-                thousandsSep: ""
-            }
-        });
+        
         this.chart = new Highcharts.Chart({
             chart: {
                 renderTo: renderTo,
@@ -127,3 +123,4 @@ var BarChart = function() {
     var renderTo = widget_controller.widgetContainer();
     $('<img src="media/plot.PNG"></img>').appendTo(renderTo);
 };
+});
