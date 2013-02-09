@@ -24,6 +24,10 @@ The application consists of a viewer and a dashboard. The **viewer** is kindly p
 Usage
 =====
 
+The app lives here_. 
+
+.. _here: http://waalweelde.ndkv.nl
+
 Click and drag the map panes to move them around. Grab the lower-right edge to resize. 
 
 **Legenda** - show the map's legend
