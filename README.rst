@@ -28,7 +28,7 @@ The app lives here_.
 
 .. _here: http://waalweelde.ndkv.nl
 
-Click and drag the map panes to move them around. Grab the lower-right edge to resize. 
+Click and drag the map panes to move them around. Grab the lower-right edge to resize. Click on a map to retrieve the value at that location (only works for maps with a legend). 
 
 **Legenda** - show the map's legend
 
@@ -36,6 +36,6 @@ Click and drag the map panes to move them around. Grab the lower-right edge to r
 
 **Voeg kaart toe..** - Add a new map window from the dropdown list. There are three types of maps for each year: vegetation type (Vegetatiestructuur), roughness (Ruwheid) and biomass production in tons per year per hectare (Biomassa). Roughness has implications for the water flow: if the area is too rough there's a higher probability of flooding. 
 
-**Voeg widget toe..** - Add a widget window. The piecharts show the total area of each 'Vegetatiestructuur' land use type, the bar chart shows the total amount of produced biomass while the info widget show detailed information about the location on any of the maps. 
+**Voeg widget toe..** - Add a widget window. The **pie charts** show the total area of each 'Vegetatiestructuur' land use type, the **bar chart** shows the total amount of produced biomass while the info widget shows detailed information about the location any of the maps (click on a map to invoke). 
 
 
