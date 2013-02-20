@@ -57,7 +57,7 @@ define(["lib/highcharts"], function () {
         ['Struweel', 309259],
         ['Vegetatie met lage bedekking (5-25%)', 44513],
         //['Zomerbed', 71003781]
-    ]
+    ]	
 ];
         
     this.determineDataSource = function() {
@@ -72,11 +72,81 @@ define(["lib/highcharts"], function () {
             case 'area_2008':
                 data_source = this.data_sources[2];
             break;
+	    case 'water_level':
+		this.getWaterData();
+	    break;
         }
-        return data_source;
+        
     };
-   
-    this.draw = function () {
+    
+    test = function (data){
+		console.log(this);
+
+		this.drawlinechart(data);
+	};
+
+    this.getWaterData = function (){
+	test2 = this.test;
+	$.ajax({type:"GET", url:"http://localhost/cgi-bin/proxy.cgi?url=http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data%26loc=PANN%26net=LMW%26projecttype=waterstanden%26category=3", success: test2
+	});
+	
+	
+	
+	};
+
+
+    this.draw = function(){
+	if (this.data_source!='water_level'){
+		this.drawpiechart();	
+		}
+	else{
+	this.determineDataSource();	
+	};
+};	
+
+   this.drawlinechart=function (data) {
+	console.log(data);
+	var renderTo = widget_controller.widgetContainer().attr('id');
+	var datasource = data;
+	this.chart = new Highcharts.Chart({
+	"chart": {
+                renderTo: renderTo,
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: true
+	},
+	"title": {
+                text: 'Monthly Average Temperature',
+                x: -20 //center},
+	    },
+            "subtitle": {
+                text: 'Source: WorldClimate.com',
+                x: -20
+            },
+	"xAxis": data_source.xAxis,
+	"tooltip": {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +'°C';
+                }
+            },
+	"legend": {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+	"series": data_source.series
+});
+	
+		
+};
+
+
+	   
+    this.drawpiechart = function () {
         //calling GLOBAL widet_controller defined in main.js 
         var renderTo = widget_controller.widgetContainer().attr('id');
         var data_source = this.determineDataSource();
@@ -124,3 +194,4 @@ var BarChart = function() {
     $('<img src="media/plot.PNG"></img>').appendTo(renderTo);
 };
 });
+

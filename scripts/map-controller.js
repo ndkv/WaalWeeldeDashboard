@@ -106,13 +106,17 @@ return function () {
             this.addMap(this.map_store.ecotopen2005_ruwheid, t, 10);
             this.addMap(this.map_store.ecotopen2005_biomassa, t, 450);
             this.addMap(this.map_store.top25nl, t, 890);
+	    this.addWidget('water_level');
             this.initialized = true;
 
-            //$.post(OpenLayers.ProxyHost + 'http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php', {type: 'cms'}, function (data) {
-            //    $.each($.parseJSON(data), function (index, value)  {
-            //        $('#geoplaza').append('<option value="' + value.idmap_view  + '">' + value.name  + '</option>');
-            //    }); 
-            //});
+
+	//TODO: remove localhost references
+            //$.post('http://waalweelde.ndkv.nl/proxy.cgi?url=http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php'
+	    $.post('http://localhost/cgi-bin/proxy.cgi?url=http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php', {type: 'cms'}, function (data) {
+            $.each($.parseJSON(data), function (index, value)  {
+                    $('#geoplaza').append('<option value="' + value.idmap_view  + '">' + value.name+ '</option>');
+                }); 
+            });
         }
     };
 
@@ -218,8 +222,10 @@ return function () {
         var styles = map_params.style;
         var layer_title = map_params.title;
         var layer_name = map_params.layer;
-        var wms_url_proxied = 'http://waalweelde.ndkv.nl/proxy.cgi?url=' + wms_url;
-//        wms_url_proxied = 'http://localhost:8000/__ajaxproxy/' + wms_url
+	//TODO: remove localhost ref        
+	//var wms_url_proxied = 'http://waalweelde.ndkv.nl/proxy.cgi?url=' + wms_url;
+	//wms_url_proxied = 'http://localhost:8000/__ajaxproxy/' + wms_url
+	var wms_url_proxied = 'http://localhost/cgi-bin/proxy.cgi?url=' + wms_url;
         
 //MAP 
         //TODO: fix this..
@@ -277,9 +283,10 @@ return function () {
 
     this.addMapExternal= function(id, name) {
         var map = this.createMap(name, 240, 240, false);
-       
+        //TODO: remove localhost ref   
+        //$.post('http://waalweelde.ndkv.nl/proxy.cgi?url=http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getView.php'
+	$.post('http://localhost/cgi-bin/proxy.cgi?url=http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php', {id: id}, function (data) {
     
-        $.post(OpenLayers.ProxyHost + 'http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getView.php', {id: id}, function (data) {
             var map_params = $.parseJSON(data);
 
             $.each(map_params.sources, function (index, item) {
@@ -324,3 +331,4 @@ return function () {
     };
     }
 })
+
