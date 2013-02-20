@@ -4,22 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <title>WaalWeelde Dashboard uiterwaardenbeheer</title>
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+	<link rel="stylesheet" href="scripts/lib/ui.jqgrid.css" />
     <link rel="stylesheet" href="style.css" />
     <script data-main="scripts/main" src="scripts/require.js"></script>
--    <script type="text/javascript">
-
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-38309337-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-
-    </script>
+-    
 </head>
 <body>
 
@@ -31,16 +20,43 @@
 
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-1">Viewer</a></li>
-        <li><a href="#tabs-2">Dashboard</a></li>
+        <li><a href="#tabs-1">Dashboard</a></li>
+        <li><a href="#tabs-2">Viewer</a></li>
     </ul>
-    <div id="tabs-1">
-        <iframe src="http://waalweelde.geocat.net:80/geonetwork/srv/en /srv/en/framedmap?wmc=http://waalweelde.geocat.net/geonetwork/srv/en/resources.get?uuid=14ac7f1d-ce8e-417e-bc27-3a30b7f6486b&fname=geonetwork-wmc1239577559148097178.cml&access=private" style="width:100%;height:930px;" frameborder=0></iframe>
+    <div id="tabs-1" style="min-height:600px;">
+	<div style="float:left;padding:25px;">
+		<img src="map.jpg" width=220 height=220><br/>
+		<b>map 1</b><br/>
+		</div>
+		<div style="float:left;padding:25px;">
+		<img src="map.jpg" width=220 height=220><br/>
+		<b>map 2</b><br/>
+		</div>
+		<div style="float:left;padding:25px;">
+		<img src="map.jpg" width=220 height=220><br/>
+		<b>map 3</b><br/>
+		</div>
+		<div style="float:left;padding:25px;">
+		<img src="map.jpg" width=220 height=220><br/>
+		<b>map 4</b><br/>
+		</div>
+		<div style="float:left;padding:25px;">
+		<img src="map.jpg" width=220 height=220><br/>
+		<b>map 5</b><br/>
+		</div>
+		<div style="float:left;padding:25px;">
+		<img src="map.jpg" width=220 height=220><br/>
+		<b>map 6</b><br/>
+		</div>
     </div>
     <div id="tabs-2">
         <div id="toolbar">
             <div>
-                <div class="styled-select">
+				<div class="styled-select">
+					<input type="text" id="mdSuggest" class="auto_complete"/>
+					<input type="button" id="mdQuery" class="button" value="Zoek"/>
+				</div> 
+                <div class="styled-select" style="display:none">
                     <select id="geoplaza" class="selector">
                         <option>Voeg een Geoplaza kaart toe..</option>
                     </select>

@@ -6,7 +6,7 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
         var t = t;
         var left = left;
         var layer_title = layer_title;
-        console.log(this.widget_id);
+  
 
         //construct widget window
         //TODO: put in a separate function
@@ -67,6 +67,32 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
         return chart;
     }
 
+	this.resultsContainer = function () {
+        var id = this.widget_id++;
+        var t = 150;
+        var left = 150;
+        var layer_title = "Zoek resultaat";
+ 
+        var container = $('<div id="draggable'+id+'" class="widget ui-widget-content ">').appendTo("#tabs-2");
+        container.draggable({stack:".ui-widget-content"});
+        container.css("top", t+"px");
+        container.css("left", left+"px");
+        container.css("height", "400px");
+		container.css("width", "700px");
+        container.css("zIndex", 5000);
+
+        var toolbar = $('<div id="map_toolbar"></div>').appendTo(container);
+        toolbar.append('<div class="close-button"  id="close'+id+'">Sluit</div>')
+        var results = $('<table id="result'+id+'"></table>').appendTo(container);
+		//$('<div id="pager'+id+'"></div>').appendTo(container);
+		
+        $("#close"+id).button().click(function(event) {
+            $(this).parent().parent().remove();
+        });
+
+        return results;
+    }
+	
 
     this.logContainer= function () {
         var id = this.widget_id++;

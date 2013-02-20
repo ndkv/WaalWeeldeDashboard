@@ -141,3 +141,8 @@ polyline {
     width: 550px;
     position: absolute;
 }
+
+ul.ui-autocomplete {
+    z-index: 5001 !important;
+}
+

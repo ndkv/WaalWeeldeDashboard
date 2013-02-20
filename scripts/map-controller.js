@@ -108,11 +108,11 @@ return function () {
             this.addMap(this.map_store.top25nl, t, 890);
             this.initialized = true;
 
-            $.post('http://waalweelde.ndkv.nl/proxy.cgi?url=http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php', {type: 'cms'}, function (data) {
-                $.each($.parseJSON(data), function (index, value)  {
-                    $('#geoplaza').append('<option value="' + value.idmap_view  + '">' + value.name  + '</option>');
-                }); 
-            });
+            //$.post(OpenLayers.ProxyHost + 'http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php', {type: 'cms'}, function (data) {
+            //    $.each($.parseJSON(data), function (index, value)  {
+            //        $('#geoplaza').append('<option value="' + value.idmap_view  + '">' + value.name  + '</option>');
+            //    }); 
+            //});
         }
     };
 
@@ -279,7 +279,7 @@ return function () {
         var map = this.createMap(name, 240, 240, false);
        
     
-        $.post('http://waalweelde.ndkv.nl/proxy.cgi?url=http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getView.php', {id: id}, function (data) {
+        $.post(OpenLayers.ProxyHost + 'http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getView.php', {id: id}, function (data) {
             var map_params = $.parseJSON(data);
 
             $.each(map_params.sources, function (index, item) {
