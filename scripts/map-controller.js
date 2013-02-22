@@ -1,8 +1,7 @@
-define(["lib/proj4js-combined", "create-map", "legend"], function (_, createMap, addLegend) {
+define(["lib/proj4js-combined", "create-map", "legend",], function (_, createMap, addLegend) {
 
 return function () {
     "use strict";
-
     //holds map objects
     this.maps = [];
     //unique map ids
@@ -106,13 +105,10 @@ return function () {
             this.addMap(this.map_store.ecotopen2005_ruwheid, t, 10);
             this.addMap(this.map_store.ecotopen2005_biomassa, t, 450);
             this.addMap(this.map_store.top25nl, t, 890);
-	    this.addWidget('water_level');
             this.initialized = true;
 
 
-	//TODO: remove localhost references
-            //$.post('http://waalweelde.ndkv.nl/proxy.cgi?url=http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php'
-	    $.post('http://localhost/cgi-bin/proxy.cgi?url=http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php', {type: 'cms'}, function (data) {
+	    $.post(proxyurl+'http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php', {type: 'cms'}, function (data) {
             $.each($.parseJSON(data), function (index, value)  {
                     $('#geoplaza').append('<option value="' + value.idmap_view  + '">' + value.name+ '</option>');
                 }); 
@@ -133,6 +129,7 @@ return function () {
     this.legendButton = function (map_id, layer_title, styles, map, wms_url) {
         //add legend
         //TODO: create own object and move functionality there
+	console.log(wms_url);
         $("#legend_button"+map_id).button().click(function(event) {
             $('#legend'+ map_id +' img');
             return function () {
@@ -222,10 +219,7 @@ return function () {
         var styles = map_params.style;
         var layer_title = map_params.title;
         var layer_name = map_params.layer;
-	//TODO: remove localhost ref        
-	//var wms_url_proxied = 'http://waalweelde.ndkv.nl/proxy.cgi?url=' + wms_url;
-	//wms_url_proxied = 'http://localhost:8000/__ajaxproxy/' + wms_url
-	var wms_url_proxied = 'http://localhost/cgi-bin/proxy.cgi?url=' + wms_url;
+	var wms_url_proxied = proxyurl + wms_url;
         
 //MAP 
         //TODO: fix this..
@@ -270,6 +264,9 @@ return function () {
             case "biomassa":
                 new BarChart('biomassa');
             break;
+	    case "waterstand":
+		this.addWidget('water_level');
+	    break;
             case "log":
                 console.log('case log');
                 this.addLog();
@@ -283,9 +280,7 @@ return function () {
 
     this.addMapExternal= function(id, name) {
         var map = this.createMap(name, 240, 240, false);
-        //TODO: remove localhost ref   
-        //$.post('http://waalweelde.ndkv.nl/proxy.cgi?url=http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getView.php'
-	$.post('http://localhost/cgi-bin/proxy.cgi?url=http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php', {id: id}, function (data) {
+	$.post(proxyurl+'http://geoplaza.ubvu.vu.nl/gpzviewer/resources/getViews.php', {id: id}, function (data) {
     
             var map_params = $.parseJSON(data);
 

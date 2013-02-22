@@ -15,7 +15,7 @@ define(["lib/jquery.jqGrid.min", "lib/grid.locale-nl" ], function ( _,_) {
 				//define callback to format results  
 				source: function(request, response){  
 								$.ajax({
-									url: "proxy.php?url=http://waalweelde.geocat.net/geonetwork/srv/dut/main.search.suggest?field=any%26q="+request.term,
+									url: proxyurl+"http://waalweelde.geocat.net/geonetwork/srv/dut/main.search.suggest?field=any%26q="+request.term,
 									dataType: "json",
 									success: function(data) {
 										//map the data into a response that will be understood by the autocomplete widget
@@ -51,7 +51,7 @@ define(["lib/jquery.jqGrid.min", "lib/grid.locale-nl" ], function ( _,_) {
 		var renderTo = widget_controller.resultsContainer().attr('id');
 
 		$('#'+renderTo).jqGrid({
-			url:'proxy.php?url=http://waalweelde.geocat.net/geonetwork/srv/dut/q?fast=index%26from=1%26to=50%26any='+val,
+			url:proxyurl+'http://waalweelde.geocat.net/geonetwork/srv/dut/q?fast=index%26from=1%26to=50%26any='+val,
 			datatype: "xml",
 			colNames:['id','titel','organisatie','samenvatting'],
 			colModel:[

@@ -59,9 +59,59 @@ define(["lib/highcharts"], function () {
         //['Zomerbed', 71003781]
     ]	
 ];
-        
-    this.determineDataSource = function() {
-        var data_source = null;
+processdata = function (data){
+	var categories= new Array();
+	var values= new Array();
+	var valuesPredict = new Array();
+	for (var i=data.H10.length-1;i>data.H10.length-722;i=i-1){
+		categories.unshift ( data.H10[i].datumdag+" - "+data.H10[i].datumtijd);
+		values.unshift (parseFloat(data.H10[i].waarde));
+		valuesPredict.unshift(null);
+		}
+	for (var i=0;i<data.H10V.length;i++){
+		valuesPredict.push(parseFloat(data.H10V[i].waarde));
+}
+	var dayMonth = data.H10[(data.H10.length-1)].datumdag;
+	dayMonth=dayMonth.split('/');
+	var yearDate = new Date();
+	var hourMinutes = data.H10[data.H10.length-1].datumtijd
+	hourMinutes = hourMinutes.split(':');
+	
+
+	var day = parseInt(dayMonth[0]);
+	var month = parseInt(dayMonth[1])-1;
+	var year = yearDate.getFullYear();
+	var hour = parseInt(hourMinutes[0]);
+	var minutes = parseInt(hourMinutes[1]);
+
+	
+	var date = new Date (year,month,day,hour,minutes);
+	date.setDate(date.getDate()-4)
+	return {date: date, values:values, valuesPredict:valuesPredict};
+};
+
+
+
+
+
+// Method called in map-controller to draw chart 
+this.draw = function(){
+	if (this.data_source!='water_level'){
+		var data = this.determineDataSource();
+		this.drawpiechart(data);	
+		}
+	else{
+	// $.proxy passes scope of the function 
+	this.createLineChart($.proxy(function(output){
+		var outputProcessed = processdata(output);
+		this.drawLineChart(outputProcessed);	
+},this));
+	}
+};	
+
+
+this.determineDataSource = function() {
+	var data_source = null;
         switch (this.data_source) {
                    case 'area_1997':
                 data_source = this.data_sources[0];
@@ -72,86 +122,102 @@ define(["lib/highcharts"], function () {
             case 'area_2008':
                 data_source = this.data_sources[2];
             break;
-	    case 'water_level':
-		this.getWaterData();
-	    break;
-        }
-        
-    };
+	    }
+        return data_source;
+};
     
-    test = function (data){
-		console.log(this);
+// AJAX call to collect waterlevel data from RWS, with callback function
+this.createLineChart=function(handleData){
+	$.ajax({type:"GET", url:proxyurl+"http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data%26loc=PANN%26net=LMW%26projecttype=waterstanden%26category=3",dataType:'json', success: function(data){handleData(data);}
+});
+};
 
-		this.drawlinechart(data);
-	};
-
-    this.getWaterData = function (){
-	test2 = this.test;
-	$.ajax({type:"GET", url:"http://localhost/cgi-bin/proxy.cgi?url=http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data%26loc=PANN%26net=LMW%26projecttype=waterstanden%26category=3", success: test2
-	});
-	
-	
-	
-	};
-
-
-    this.draw = function(){
-	if (this.data_source!='water_level'){
-		this.drawpiechart();	
-		}
-	else{
-	this.determineDataSource();	
-	};
-};	
-
-   this.drawlinechart=function (data) {
-	console.log(data);
+// function to draw the linechart
+this.drawLineChart=function (data) {
+	//calling GLOBAL widet_controller defined in main.js 
 	var renderTo = widget_controller.widgetContainer().attr('id');
-	var datasource = data;
 	this.chart = new Highcharts.Chart({
 	"chart": {
                 renderTo: renderTo,
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: true
+		zoomType: 'x',
+		spacingRight : 20
+
 	},
+	"colors":[
+	'#4572A7', 
+	'#C9C9C9', 
+	'#89A54E', 
+	'#80699B', 
+	'#3D96AE', 
+	'#DB843D', 
+	'#92A8CD', 
+	'#A47D7C', 
+	'#B5CA92'
+],
 	"title": {
-                text: 'Monthly Average Temperature',
+                text: 'Waterstand t.o.v. NAP (in cm) Pannerdense Kop',
                 x: -20 //center},
 	    },
             "subtitle": {
-                text: 'Source: WorldClimate.com',
+                text: 'Klik en sleep om in te zoomen',
                 x: -20
             },
-	"xAxis": data_source.xAxis,
+	"xAxis": { type: 'datetime', maxZoom : 36000*6, title :{text:null}},
+	 "yAxis": {
+                title: {
+                    text: 'cm NAP'
+                },
+                showFirstLabel: false
+            },
 	"tooltip": {
-                formatter: function() {
-                        return '<b>'+ this.series.name +'</b><br/>'+
-                        this.x +': '+ this.y +'°C';
+                shared: true
+                }
+            ,
+	"legend": {
+                enabled: false
+            },
+	'plotOptions': {
+                area: {  
+                    lineWidth: 2,
+                    marker: {
+                        enabled: false,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                radius: 5
+                            }
+                        }
+                    },
+                    shadow: false,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
                 }
             },
-	"legend": {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'top',
-                x: -10,
-                y: 100,
-                borderWidth: 0
-            },
-	"series": data_source.series
+
+	"series": [{
+		type: 'area',
+		name: 'Waterstand',
+		pointInterval: 600*1000,
+                pointStart: Date.UTC(data.date.getFullYear(),data.date.getMonth(),data.date.getDate(),data.date.getHours(),data.date.getMinutes()),
+		data: data.values
+	},{type: 'area',
+		name: 'Voorspelling waterstand',
+		pointInterval: 600*1000,
+                pointStart: Date.UTC(data.date.getFullYear(),data.date.getMonth(),data.date.getDate(),data.date.getHours(),data.date.getMinutes()),
+		data: data.valuesPredict}]
+
 });
-	
-		
 };
-
-
 	   
-    this.drawpiechart = function () {
+    this.drawpiechart = function (data) {
         //calling GLOBAL widet_controller defined in main.js 
         var renderTo = widget_controller.widgetContainer().attr('id');
-        var data_source = this.determineDataSource();
-        var title = 'Vegetatiestructuur totale oppervlakte' + this.data_source.split("_")[1];
-        
+        var data_source = data
+        var title = 'Vegetatiestructuur totale oppervlakte' + this.data_source.split("_")[1];       
         this.chart = new Highcharts.Chart({
             chart: {
                 renderTo: renderTo,
@@ -188,6 +254,9 @@ define(["lib/highcharts"], function () {
         });
     }
 };
+
+
+
 
 var BarChart = function() {
     var renderTo = widget_controller.widgetContainer();
