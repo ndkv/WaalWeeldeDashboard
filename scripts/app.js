@@ -7,9 +7,9 @@ define(["lib/jquery", "lib/jquery-ui-1.10.0/js/jquery-ui-1.10.0.custom.min", "li
 		}});
         widget_controller = new ContainerWaalWeelde.ContainerWaalWeelde ();
 
-	proxyurl='http://localhost/cgi-bin/proxy.cgi?url=';
+	proxyurl='http://localhost/proxy.php?url=';
             
-        var map_control = new MapControl();
+        map_control = new MapControl();
 		var md_control = new MdControl();
 		
 		$("#mdQuery").click(function(event) {

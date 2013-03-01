@@ -59,6 +59,8 @@ define(["lib/highcharts"], function () {
         //['Zomerbed', 71003781]
     ]	
 ];
+
+
 processdata = function (data){
 	var categories= new Array();
 	var values= new Array();

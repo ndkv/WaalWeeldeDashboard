@@ -145,4 +145,15 @@ polyline {
 ul.ui-autocomplete {
     z-index: 5001 !important;
 }
+.result{
+height:90%;
+overflow:scroll;
+margin: 4px;
+}
+.result table{
+border:0px;
+}
+
+
+
 

@@ -250,6 +250,45 @@ return function () {
 
 };
 
+    this.addMapFromWMS = function(wmsURL,layerName,layerTitle) {
+	var t = 130;
+	var left =  240; 
+        var legend = false;
+	var wms_url_proxied = proxyurl + wmsURL;
+        
+//MAP 
+        //TODO: fix this..
+        var map_cont = createMap(layerTitle, t, left, legend);
+        var map = map_cont[0];
+        var map_id = map_cont[1];
+        this.maps.push(map);
+        var map_num = this.maps.length - 1;
+
+        this.lockButton(map_id, map_num);
+        this.synchronizedMovementControl(map, map_num);
+
+        //LAYER    
+        var layer = new OpenLayers.Layer.WMS(
+            "OpenLayers WMS",
+            wmsURL,
+            {layers:layerName, format: "image/png", srs:"EPSG:28992"}, {singleTile:false, ratio: 1});
+        map.addLayer(layer);
+
+        //this.legendButton(map_id, layer_title, styles, map, wms_url);
+        this.getFeatureControl(wmsURL, layer, map);
+        this.graticuleControl(map);
+
+        //center map
+        var center = new OpenLayers.LonLat(new Array(6.066243, 51.870927));
+        var transformed = center.clone().transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:28992"));
+        map.setCenter(transformed, 6);
+};
+
+
+
+
+
+
     this.mapComposer = function(map) {
         switch(map) {
             case "ecotopen1997_w":
