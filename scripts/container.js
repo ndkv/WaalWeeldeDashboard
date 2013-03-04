@@ -48,6 +48,7 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
         var layer_title = "";
         console.log(this.widget_id);
 
+
         var container = $('<div id="draggable'+id+'"class="widget ui-widget-content ">').appendTo("#tabs-2");
         container.draggable({stack:".ui-widget-content"});
         container.css("top", t+"px");
@@ -74,6 +75,7 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
         var layer_title = "Zoek resultaat";
  
         var container = $('<div id="draggable'+id+'" class="widget ui-widget-content ">').appendTo("#tabs-2");
+	container.append('<p class="ui-widget-header">'+layer_title+' </p>');
         //container.draggable({stack:".ui-widget-content"});
         container.css("top", t+"px");
         container.css("left", left+"px");
@@ -89,7 +91,6 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
         $("#close"+id).button().click(function(event) {
             $(this).parent().parent().remove();
         });
-
         return results;
     }
 	

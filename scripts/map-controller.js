@@ -126,15 +126,15 @@ return function () {
 
     }
     
-    this.legendButton = function (map_id, layer_title, styles, map, wms_url) {
+    this.legendButton = function (map_id,styles, layer_title, map, wms_url) {
         //add legend
         //TODO: create own object and move functionality there
-	console.log(wms_url);
+	console.log("shit happens");
         $("#legend_button"+map_id).button().click(function(event) {
             $('#legend'+ map_id +' img');
             return function () {
             //TODO: pass content object instead
-                addLegend(layer_title, styles, map_id, map, wms_url);
+                addLegend(layer_title,styles, map_id, map, wms_url);
             }()
         });
 
@@ -238,8 +238,7 @@ return function () {
             wms_url,
             {layers:layer_name, format: "image/png", srs:"EPSG:28992", styles:styles}, {singleTile:false, ratio: 1});
         map.addLayer(layer);
-
-        this.legendButton(map_id, layer_title, styles, map, wms_url);
+        this.legendButton(map_id,styles, layer_name, map, wms_url);
         this.getFeatureControl(wms_url, layer, map);
         this.graticuleControl(map);
 
@@ -253,7 +252,7 @@ return function () {
     this.addMapFromWMS = function(wmsURL,layerName,layerTitle) {
 	var t = 130;
 	var left =  240; 
-        var legend = false;      
+        var legend = true;      
 //MAP 
         //TODO: fix this..
         var map_cont = createMap(layerTitle, t, left, legend);
@@ -271,9 +270,9 @@ return function () {
             wmsURL,
             {layers:layerName, format: "image/png", srs:"EPSG:28992"}, {singleTile:false, ratio: 1});
         map.addLayer(layer);
-
-        //this.legendButton(map_id, layer_title, styles, map, wms_url);
-        //this.getFeatureControl(wmsURL, layer, map);
+	var styles = "";
+        this.legendButton(map_id,styles,layerName, map,wmsURL);
+        this.getFeatureControl(wmsURL, layer, map);
         this.graticuleControl(map);
 
         //center map

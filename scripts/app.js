@@ -6,8 +6,13 @@ define(["lib/jquery", "lib/jquery-ui-1.10.0/js/jquery-ui-1.10.0.custom.min", "li
 			md_control.initialize();
 		}});
         widget_controller = new ContainerWaalWeelde.ContainerWaalWeelde ();
+	
+	// For displaying jquery tooltips
+	$(function() {
+		$( document).tooltip();
+	});
 
-	proxyurl='http://localhost/proxy.php?url=';
+	proxyurl='proxy.php?url=';
             
         map_control = new MapControl();
 		var md_control = new MdControl();

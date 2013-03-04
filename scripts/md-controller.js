@@ -80,6 +80,8 @@ result.layerTitle="";
 return result;
 }
 
+//'<td title="'+"Beheerder metadata: "+metaJson.organisation+'"><br/>'+metaJson.organisation+'</td>'
+
 function createRow(metaJson){
 var thumbnailHTML="<td style='width:50px;'>"+"<div><img src='"+metaJson.image+"' width='50px'/></div></td>"
 
@@ -87,12 +89,18 @@ var row = "<tr valign='top'>"
 if (displayThumb){
 row+=thumbnailHTML
 }
-row+="<td width='80%'><b>"+metaJson.title+"</b><br/><div id='abstract' title='"+metaJson.abstract+"'>"+metaJson.abstract.substring(0,270);
+var organisation = metaJson.organisation.substring(0,45)
+if (metaJson.organisation.length>45){
+organisation+="..."
+}
+
+
+row+="<td width='80%'><b>"+metaJson.title+"</b><i style='float:right' title='"+metaJson.organisation+"'>"+organisation+"</i><br/><div id='abstract' title='"+metaJson.abstract+"'>"+metaJson.abstract.substring(0,270);
 
 if (metaJson.abstract.length>270){
 row+="<b>...</b>"
 }
-row+="</div></td>"+'<td><button type="button" style="float:right;"   onclick="javascript:void(map_control.addMapFromWMS('+"'"+metaJson.url+"'"+','+"'"+metaJson.layerName+"'"+','+"'"+metaJson.layerTitle+"'"+'));">+Kaart</button></td>'+"</tr>";
+row+="</div></td>"+'<td><br/><button type="button" style="float:right;"   onclick="javascript:void(map_control.addMapFromWMS('+"'"+metaJson.url+"'"+','+"'"+metaJson.layerName+"'"+','+"'"+metaJson.layerTitle+"'"+'));" title="Voeg online kaart dienst aan het dashboard toe.">+Kaart</buttogtin></td>'+"</tr>";
 
 return row;
 }
@@ -108,7 +116,7 @@ function ValidUrl(str) {
 
 
 function processdata( data ) {
-
+var resultsCount = 0;
 result="<table>"
 $(data).find("response").each(function(){
 //For each record
@@ -116,10 +124,16 @@ $(this).find("metadata").each(function(){
 // Check if link is defined
 if ($(this).find("link").text()){
 var linkJson = splitLink($(this).find("link").first().text());
+//check if record has layertitle defined in link, other wise get layertitle from CSW search response
+if (linkJson.layerTitle==""){
+linkJson.layerTitle=$(this).find("title").text()
+}
 //Check if record has WMS url and layername defined >if so: create entry in table
 if (linkJson.isWMS && linkJson.layerName!=""){
 linkJson.title=$(this).find("title").text();
 linkJson.abstract=$(this).find("abstract").text();
+resultsCount+=1;
+// Get thumbnail
 if (displayThumb){
 try{
 linkJson.image=$(this).find("image").first().text().split("|")[1];
@@ -131,11 +145,35 @@ catch(err){
 linkJson.image="./media/default_thumbnail.png"
 }
 }
+
+// Get point of contact
+var pocCount = 0;
+linkJson.organisation = '';
+try{
+$(this).find("responsibleParty").each(function(){
+var textSplit = $(this).text().split("|");
+if (textSplit[0]=="pointOfContact" && textSplit[1]=="metadata"){
+linkJson.organisation  = textSplit[2];
+}
+pocCount+=1;
+if (pocCount==2 && linkJson.organisation == ''){
+linkJson.organisation  = textSplit[2];
+}
+})
+}
+catch(err){
+linkJson.organisation = "Onbekend";
+}
 result+=createRow(linkJson);
 }
 }})
 })
-result+="</table>"
+if (resultsCount>0){
+result+="</table>";
+}
+else{
+result="<p>Geen online kaart diensten gevonden. Zoek opnieuw met andere zoektermen.</p>"
+}
 return result;
 }
 
@@ -158,53 +196,14 @@ this.drawResults=function(data){
 
 
 this.ajaxRequest= function(handleData, val){
-	$.ajax({type:"GET", url:proxyurl+'http://test.ngr.nationaalgeoregister.nl/geonetwork/srv/dut/q?fast=index%26from=1%26to=100%26any_OR_geokeyword_OR_title_OR_keyword='+val+"*&dynamic=true", datatype:"xml", success: function(data){handleData(data);}
+	$.ajax({type:"GET", url:proxyurl+'http://waalweelde.geocat.net/geonetwork/srv/dut/q?fast=index%26from=1%26to=50%26any='+val, datatype:"xml", success: function(data){handleData(data);}
 });
 };
-
-
+//'http://test.ngr.nationaalgeoregister.nl/geonetwork/srv/dut/q?fast=index%26from=1%26to=100%26any_OR_geokeyword_OR_title_OR_keyword='+val+"*%26dynamic=true"
+//http://waalweelde.geocat.net/geonetwork/srv/dut/q?fast=index%26from=1%26to=50%26any='+val
 
 };
 
 })
 
 
-
-/*		$('#'+renderTo)..jqGrid({
-			url:proxyurl+'http://waalweelde.geocat.net/geonetwork/srv/dut/q?fast=index%26from=1%26to=50%26any='+val,
-			datatype: "xml",
-			colNames:['id','titel','organisatie','samenvatting'],
-			colModel:[
-				//set the uuid field as link, better to use the link field here probably
-				{name:'uuid',index:'uuid', width:80,  xmlmap:"uuid", formatter:'showlink', formatoptions:{baseLinkUrl:"javascript:void(map_control.addMapFromWMS()); //"}, sortable:false},
-				{name:'title',index:'title', width:120,  xmlmap:"title",sortable:false},
-				{name:'name',index:'name', width:150,xmlmap:"responsibleParty",sortable:false},
-				{name:'abstract',index:'abstract', width:250,  xmlmap:"abstract",sortable:false}
-				//hier wil je waarschijnlijk ook de datum en de geobbox zien
-				//eventueel een link om het volledige record te zien
-				//een thumbnail? (veld heet 'image')
-			],
-			rowNum:10,
-			autowidth: true,
-			rowList:[10,20,30],
-			height:'420px',
-			width:'600px',
-			//pager: jQuery('#pager1'),
-			//sortname: 'title',
-			xmlReader: {
-					root : "response",
-					row: "metadata",
-					repeatitems: false,
-					id: "uuid"
-			},
-			viewrecords: true,
-			sortorder: "desc",
-			caption:"Zoek resultaten"
-		})
-               
-		
-		}
-		 
-	}
-
-})*/
