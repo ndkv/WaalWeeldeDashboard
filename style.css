@@ -72,7 +72,7 @@ body {background-color: #d2e1e7; }
 #toolbar {
     margin-left: auto;
 	margin-right: auto;
-	width: 1035px;
+	width: 1200px;
 }
 
 #header {
@@ -154,6 +154,13 @@ margin: 4px;
 border:0px;
 }
 
+#mdQuery {
+	margin: 5px;
+}
+#mdSuggest {
+    margin: 5px;
+}
 
-
-
+.result td {
+    padding-bottom: 10px;
+}
