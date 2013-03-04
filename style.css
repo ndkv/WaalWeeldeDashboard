@@ -154,6 +154,13 @@ margin: 4px;
 border:0px;
 }
 
+#mdQuery {
+	margin: 5px;
+}
+#mdSuggest {
+    margin: 5px;
+}
 
-
-
+.result td {
+    padding-bottom: 10px;
+}
