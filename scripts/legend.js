@@ -14,7 +14,6 @@ define([],function () {
 		}		
 		img.src=url
                 img.onload = function() {
-                    console.log($('#map'+map_id).width());
                     $("#map"+map_id).width($('#map'+map_id).width() - this.width);
                     $(img).appendTo($('#legend'+map_id));
                     map.updateSize();

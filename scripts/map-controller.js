@@ -129,7 +129,6 @@ return function () {
     this.legendButton = function (map_id,styles, layer_title, map, wms_url) {
         //add legend
         //TODO: create own object and move functionality there
-	console.log("shit happens");
         $("#legend_button"+map_id).button().click(function(event) {
             $('#legend'+ map_id +' img');
             return function () {
