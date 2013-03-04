@@ -66,16 +66,16 @@ catch(err){
 result.title="";
 }
 try{
-result.layerTitle=data[0];
-}
-catch(err){
-result.layerTitle="";
-}
-try{
-result.layerName=data[1];
+result.layerName=data[0];
 }
 catch(err){
 result.layerName="";
+}
+try{
+result.layerTitle=data[1];
+}
+catch(err){
+result.layerTitle="";
 }
 return result;
 }
@@ -92,7 +92,7 @@ row+="<td width='80%'><b>"+metaJson.title+"</b><br/><div id='abstract' title='"+
 if (metaJson.abstract.length>270){
 row+="<b>...</b>"
 }
-row+="</div></td>"+'<td><button type="button" style="float:right;"   onclick="javascript:void(map_control.addMapFromWMS('+"'"+escape(metaJson.url)+"'"+','+"'"+metaJson.layerName+"'"+','+"'"+metaJson.layerTitle+"'"+'));">+Kaart</button></td>'+"</tr>"
+row+="</div></td>"+'<td><button type="button" style="float:right;"   onclick="javascript:void(map_control.addMapFromWMS('+"'"+metaJson.url+"'"+','+"'"+metaJson.layerName+"'"+','+"'"+metaJson.layerTitle+"'"+'));">+Kaart</button></td>'+"</tr>";
 
 return row;
 }
@@ -108,6 +108,7 @@ function ValidUrl(str) {
 
 
 function processdata( data ) {
+
 result="<table>"
 $(data).find("response").each(function(){
 //For each record
@@ -121,7 +122,6 @@ linkJson.title=$(this).find("title").text();
 linkJson.abstract=$(this).find("abstract").text();
 if (displayThumb){
 try{
-console.log($(this).find("image").text().split("|"));
 linkJson.image=$(this).find("image").first().text().split("|")[1];
 if (linkJson.image=='' || !linkJson.image || !ValidUrl(linkJson.image)){
 linkJson.image="./media/default_thumbnail.png"
@@ -141,15 +141,9 @@ return result;
 
 
 
-
-
-
-		
-
-
 this.query = function(val){	
 		this.ajaxRequest($.proxy(function(output){
-
+			
 			var outputProcessed = processdata(output);
 			this.drawResults(outputProcessed);
 }, this), val);

@@ -253,9 +253,7 @@ return function () {
     this.addMapFromWMS = function(wmsURL,layerName,layerTitle) {
 	var t = 130;
 	var left =  240; 
-        var legend = false;
-	var wms_url_proxied = proxyurl + wmsURL;
-        
+        var legend = false;      
 //MAP 
         //TODO: fix this..
         var map_cont = createMap(layerTitle, t, left, legend);
@@ -275,7 +273,7 @@ return function () {
         map.addLayer(layer);
 
         //this.legendButton(map_id, layer_title, styles, map, wms_url);
-        this.getFeatureControl(wmsURL, layer, map);
+        //this.getFeatureControl(wmsURL, layer, map);
         this.graticuleControl(map);
 
         //center map
