@@ -164,3 +164,14 @@ border:0px;
 .result td {
     padding-bottom: 10px;
 }
+
+.layersDiv{
+	background-color: rgba(0, 60, 136, 0.5) !important;
+}
+
+IMG#OpenLayers_Control_MaximizeDiv_innerImage.olAlphaImg{
+opacity:.5 !important;
+}
+
+
+

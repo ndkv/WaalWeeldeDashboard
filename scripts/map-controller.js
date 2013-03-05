@@ -235,8 +235,18 @@ return function () {
         var layer = new OpenLayers.Layer.WMS(
             "OpenLayers WMS",
             wms_url,
-            {layers:layer_name, format: "image/png", srs:"EPSG:28992", styles:styles}, {singleTile:false, ratio: 1});
-        map.addLayer(layer);
+            {layers:layer_name, format: "image/png", srs:"EPSG:28992", styles:styles, transparent: true}, {singleTile:false, ratio: 1});
+
+	var backgroundLayer = new OpenLayers.Layer.WMS(
+	"BRT achtergrondkaart","http://geodata.nationaalgeoregister.nl/wmsc?",{layers: 'brtachtergrondkaart', transparent: 'true', false: 'image/png'}, {isBaseLayer: true, projection: 'EPSG:28992',units: 'm', maxExtent: new OpenLayers.Bounds(-285401.92,22598.08,595401.92,903401.92), maxResolution:3440.64, resolutions:[3440.64,1720.32,860.16,430.08,215.04,107.52,53.76,26.88,13.44,6.72,3.36,1.68,0.84]});
+	var aerialLayer = 	new OpenLayers.Layer.WMS(
+	"Luchtfoto Eurosense 2006","http://gdsc.nlr.nl/wms/dkln2006?",{layers: 'dkln2006-1m', false: 'image/png'}, {isBaseLayer: true, projection: 'EPSG:28992',units: 'm', maxExtent: new OpenLayers.Bounds(-285401.92,22598.08,595401.92,903401.92), maxResolution:3440.64, resolutions:[3440.64,1720.32,860.16,430.08,215.04,107.52,53.76,26.88,13.44,6.72,3.36,1.68,0.84]});
+
+	var blankLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
+
+        map.addLayers([layer, backgroundLayer,aerialLayer, blankLayer]);
+	map.addControl(new OpenLayers.Control.LayerSwitcher());
+
         this.legendButton(map_id,styles, layer_name, map, wms_url);
         this.getFeatureControl(wms_url, layer, map);
         this.graticuleControl(map);
@@ -267,8 +277,19 @@ return function () {
         var layer = new OpenLayers.Layer.WMS(
             "OpenLayers WMS",
             wmsURL,
-            {layers:layerName, format: "image/png", srs:"EPSG:28992"}, {singleTile:false, ratio: 1});
-        map.addLayer(layer);
+            {layers:layerName, format: "image/png", srs:"EPSG:28992",transparent: 'true'}, {singleTile:false, ratio: 1});
+	
+	var backgroundLayer = new OpenLayers.Layer.WMS(
+	"BRT achtergrondkaart","http://geodata.nationaalgeoregister.nl/wmsc?",{layers: 'brtachtergrondkaart', transparent: 'true', false: 'image/png'}, {isBaseLayer: true, projection: 'EPSG:28992',units: 'm', maxExtent: new OpenLayers.Bounds(-285401.92,22598.08,595401.92,903401.92), maxResolution:3440.64, resolutions:[3440.64,1720.32,860.16,430.08,215.04,107.52,53.76,26.88,13.44,6.72,3.36,1.68,0.84]});
+
+	var aerialLayer = 	new OpenLayers.Layer.WMS(
+	"Luchtfoto Eurosense 2006","http://gdsc.nlr.nl/wms/dkln2006?",{layers: 'dkln2006-1m', false: 'image/png'}, {isBaseLayer: true, projection: 'EPSG:28992',units: 'm', maxExtent: new OpenLayers.Bounds(-285401.92,22598.08,595401.92,903401.92), maxResolution:3440.64, resolutions:[3440.64,1720.32,860.16,430.08,215.04,107.52,53.76,26.88,13.44,6.72,3.36,1.68,0.84]});
+
+
+	var blankLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
+	
+	map.addLayers([layer, backgroundLayer,aerialLayer, blankLayer]);	
+	map.addControl(new OpenLayers.Control.LayerSwitcher());
 	var styles = "";
         this.legendButton(map_id,styles,layerName, map,wmsURL);
         this.getFeatureControl(wmsURL, layer, map);
