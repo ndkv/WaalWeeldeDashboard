@@ -35,10 +35,20 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
             $(this).parent().parent().remove();
         });
 	$("#draggable"+map_id).on("resize",function(event,element){
+	   try{
 	   map_control.maps[map_id].updateSize();
+	}
+	catch(error){
+	   
+	}
 	});
 	$("#draggable"+map_id).on("drag",function(event,element){
+		try{
 	    map_control.maps[map_id].updateSize();
+		}
+		catch(error){
+	
+		}
 	});
         //legend
 
