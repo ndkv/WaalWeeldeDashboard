@@ -69,9 +69,7 @@ processdata = function (data){
 	var values= new Array();
 	var valuesPredict = new Array();
 	var valuesTest = new Array();
-	console.log(data.H10);
-	console.log(data.H10[data.H10.length-1]);
-	
+
 	for (var i=data.H10.length-1;i>data.H10.length-722;i=i-1){
 		if(!data.H10[i].waarde){
 			for (var j=i;j>i-6;j=j-1){
@@ -94,8 +92,6 @@ processdata = function (data){
 		valuesPredict.unshift(null);
 		valuesTest.unshift(null);
 		}
-	console.log(values);
-		console.log(valuesPredict);
 	for (var i=0;i<data.H10V.length;i++){
 		valuesPredict.push(parseFloat(data.H10V[i].waarde));
 }
@@ -104,7 +100,6 @@ processdata = function (data){
 	var yearDate = new Date();
 	var hourMinutes = data.H10[data.H10.length-1].datumtijd
 	hourMinutes = hourMinutes.split(':');
-	
 
 	var day = parseInt(dayMonth[0]);
 	var month = parseInt(dayMonth[1])-1;
@@ -118,10 +113,6 @@ processdata = function (data){
 	
 	return {date: date, values:values, valuesPredict:valuesPredict};
 };
-
-
-
-
 
 // Method called in map-controller to draw chart 
 this.draw = function(){

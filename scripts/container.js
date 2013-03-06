@@ -34,23 +34,34 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
         $("#close"+map_id).button().click(function(event) {
             $(this).parent().parent().remove();
         });
+
+       //Update map positions after drag or resize event Otherwise getfeatureinfo wont work.
 	$("#draggable"+map_id).on("resize",function(event,element){
 	   try{
-	   map_control.maps[map_id].updateSize();
+	for(var i=0;i<map_control.maps.length;i++){
+		if(map_control.maps[i].id == map_id){
+			map_control.maps[i].updateSize();
+			break;
+		}
+	}
 	}
 	catch(error){
-	   
+		//console.log(error);
 	}
 	});
 	$("#draggable"+map_id).on("drag",function(event,element){
 		try{
-	    map_control.maps[map_id].updateSize();
+	for(var i=0;i<map_control.maps.length;i++){
+		if(map_control.maps[i].id == map_id){
+			map_control.maps[i].updateSize();
+			break;
+		}
+		}
 		}
 		catch(error){
-	
+		//console.log(error);
 		}
 	});
-        //legend
 
         return [map_id, map_container];
 
@@ -61,11 +72,8 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
         var t = 240;
         var left = 240;
         var layer_title = "";
-        console.log(this.widget_id);
-
-
         var container = $('<div id="draggable'+id+'"class="widget ui-widget-content ">').appendTo("#tabs-2");
-        //container.draggable({stack:".ui-widget-content"});
+        container.draggable({stack:".ui-widget-content"});
         container.css("top", t+"px");
         container.css("left", left+"px");
 //        container.css("height", "290px");
@@ -91,7 +99,7 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
  
         var container = $('<div id="draggable'+id+'" class="widget ui-widget-content ">').appendTo("#tabs-2");
 	container.append('<p class="ui-widget-header">'+layer_title+' </p>');
-        //container.draggable({stack:".ui-widget-content"});
+        container.draggable({stack:".ui-widget-content"});
         container.css("top", t+"px");
         container.css("left", left+"px");
         container.css("height", "400px");
@@ -113,7 +121,6 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
     this.logContainer= function () {
         var id = this.widget_id++;
         var t = $('window').height() - 160;
-        console.log(t);
         var left = 240;
         var layer_title = "";
 
