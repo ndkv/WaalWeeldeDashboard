@@ -1,6 +1,17 @@
 define(["lib/jquery", "lib/jquery-ui-1.10.0/js/jquery-ui-1.10.0.custom.min", "lib/OpenLayers-2.12/OpenLayers", "map-controller", "container", "md-controller"], function(_, _, _, MapControl, ContainerWaalWeelde, MdControl) {
     
     return { initialize: function () {
+	$(document).ready(function(){
+		map_control.initialize();
+		md_control.initialize();
+                //$(".maximizeDiv").html("<b>+</b>");
+	        //$("#OpenLayers_Control_MaximizeDiv").css("border","3px solid red");
+		//$("div").css("border","3px solid red");
+	});
+	
+
+
+
         $("#tabs").tabs({activate: function(event, ui) {
 			map_control.initialize();
 			md_control.initialize();
@@ -13,7 +24,7 @@ define(["lib/jquery", "lib/jquery-ui-1.10.0/js/jquery-ui-1.10.0.custom.min", "li
 	});
 
 	proxyurl='proxy.php?url=';
-            
+        OpenLayers.ProxyHost=proxyurl;   
         map_control = new MapControl();
 		var md_control = new MdControl();
 		

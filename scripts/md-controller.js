@@ -196,7 +196,7 @@ this.drawResults=function(data){
 
 
 this.ajaxRequest= function(handleData, val){
-	$.ajax({type:"GET", url:proxyurl+'http://waalweelde.geocat.net/geonetwork/srv/dut/q?fast=index%26from=1%26to=50%26any='+val, datatype:"xml", success: function(data){handleData(data);}
+	$.ajax({type:"GET", url:proxyurl+'http://test.ngr.nationaalgeoregister.nl/geonetwork/srv/dut/q?fast=index%26from=1%26to=100%26any_OR_geokeyword_OR_title_OR_keyword='+val+"*%26dynamic=true", datatype:"xml", success: function(data){handleData(data);}
 });
 };
 //'http://test.ngr.nationaalgeoregister.nl/geonetwork/srv/dut/q?fast=index%26from=1%26to=100%26any_OR_geokeyword_OR_title_OR_keyword='+val+"*%26dynamic=true"

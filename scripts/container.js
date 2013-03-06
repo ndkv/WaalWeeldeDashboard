@@ -34,7 +34,12 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
         $("#close"+map_id).button().click(function(event) {
             $(this).parent().parent().remove();
         });
-
+	$("#draggable"+map_id).on("resize",function(event,element){
+	   map_control.maps[map_id].updateSize();
+	});
+	$("#draggable"+map_id).on("drag",function(event,element){
+	    map_control.maps[map_id].updateSize();
+	});
         //legend
 
         return [map_id, map_container];
@@ -50,7 +55,7 @@ define(["lib/OpenLayers-2.12/OpenLayers"], {ContainerWaalWeelde : function () {
 
 
         var container = $('<div id="draggable'+id+'"class="widget ui-widget-content ">').appendTo("#tabs-2");
-        container.draggable({stack:".ui-widget-content"});
+        //container.draggable({stack:".ui-widget-content"});
         container.css("top", t+"px");
         container.css("left", left+"px");
 //        container.css("height", "290px");

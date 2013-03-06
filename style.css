@@ -169,8 +169,16 @@ border:0px;
 	background-color: rgba(0, 60, 136, 0.5) !important;
 }
 
+#OpenLayers_Control_MaximizeDiv{
+background-color: rgba(0, 60, 136, 0.5) !important;
+border-radius: 10px 0 0 10px;
+color:white;
+text-align: right;
+padding: 2px 5px 0 0;
+}
+
 IMG#OpenLayers_Control_MaximizeDiv_innerImage.olAlphaImg{
-opacity:.5 !important;
+display:none;
 }
 
 

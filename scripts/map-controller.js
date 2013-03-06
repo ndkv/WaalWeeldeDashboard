@@ -1,9 +1,10 @@
-define(["lib/proj4js-combined", "create-map", "legend",], function (_, createMap, addLegend) {
+define(["lib/proj4js-combined", "create-map", "legend","charts"], function (_, createMap, addLegend,charts) {
 
 return function () {
     "use strict";
     //holds map objects
     this.maps = [];
+    OpenLayers.ProxyHost="proxy.php?url=";
     //unique map ids
     this.map_count = 0;
     //holds objects for which pan/zoom scroll is turned on
@@ -11,6 +12,9 @@ return function () {
 
     Proj4js.defs["EPSG:28992"] = "+title=Amersfoort / RD New +proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs";
 
+
+    
+    
     this.initialized = false;
 
     this.amazon_serv = 'http://ec2-23-22-59-21.compute-1.amazonaws.com:8080/geoserver/wms?';
@@ -139,6 +143,8 @@ return function () {
 
     };
 
+
+
     this.lockButton = function (map_id, map_num) {
         var that = this;
         //TODO: crate map object and move functionality there
@@ -159,8 +165,8 @@ return function () {
 
     this.getFeatureControl = function (wms_url, layer, map) {
         var getFeatureControl = new OpenLayers.Control.WMSGetFeatureInfo({
-            url: wms_url,
-            drillDown: false,
+            url: proxyurl+wms_url,
+            drillDown: true,
             hover: false,
             layers: [layer],
             queryVisible: true,
@@ -177,12 +183,19 @@ return function () {
                     }
 
                     //TODO: style differently 
+		
+
+
+		var popupContent = event.text;
+
+	
+
                     var pop = new OpenLayers.Popup.FramedCloud(
                         "chicken", 
                         map.getLonLatFromPixel(event.xy),
                         null,
                         //change this value to remove big table
-                        'Ecotoop:' + $('tr', $(event.text))[1].children[2].innerText,
+                        popupContent,
                         null,
                         true
                     )
@@ -194,6 +207,7 @@ return function () {
                     //console.log('what');
                 },
                 nogetfeatureinfo: function(event) {
+	       	     console.log(event);
                     console.log("Cannot find queryable layers");
                 }
               } 
@@ -235,7 +249,7 @@ return function () {
         var layer = new OpenLayers.Layer.WMS(
             "OpenLayers WMS",
             wms_url,
-            {layers:layer_name, format: "image/png", srs:"EPSG:28992", styles:styles, transparent: true}, {singleTile:false, ratio: 1});
+            {layers:layer_name, format: "image/png", srs:"EPSG:28992", styles:styles, transparent:true}, {singleTile:false, ratio: 1});
 
 	var backgroundLayer = new OpenLayers.Layer.WMS(
 	"BRT achtergrondkaart","http://geodata.nationaalgeoregister.nl/wmsc?",{layers: 'brtachtergrondkaart', transparent: 'true', false: 'image/png'}, {isBaseLayer: true, projection: 'EPSG:28992',units: 'm', maxExtent: new OpenLayers.Bounds(-285401.92,22598.08,595401.92,903401.92), maxResolution:3440.64, resolutions:[3440.64,1720.32,860.16,430.08,215.04,107.52,53.76,26.88,13.44,6.72,3.36,1.68,0.84]});
@@ -243,9 +257,11 @@ return function () {
 	"Luchtfoto Eurosense 2006","http://gdsc.nlr.nl/wms/dkln2006?",{layers: 'dkln2006-1m', false: 'image/png'}, {isBaseLayer: true, projection: 'EPSG:28992',units: 'm', maxExtent: new OpenLayers.Bounds(-285401.92,22598.08,595401.92,903401.92), maxResolution:3440.64, resolutions:[3440.64,1720.32,860.16,430.08,215.04,107.52,53.76,26.88,13.44,6.72,3.36,1.68,0.84]});
 
 	var blankLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
+	
 
-        map.addLayers([layer, backgroundLayer,aerialLayer, blankLayer]);
+        map.addLayers([layer,blankLayer, backgroundLayer,aerialLayer ]);
 	map.addControl(new OpenLayers.Control.LayerSwitcher());
+	$("#map"+ map_id+" #OpenLayers_Control_MaximizeDiv").html("<b>+</b>");
 
         this.legendButton(map_id,styles, layer_name, map, wms_url);
         this.getFeatureControl(wms_url, layer, map);
@@ -288,22 +304,20 @@ return function () {
 
 	var blankLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
 	
-	map.addLayers([layer, backgroundLayer,aerialLayer, blankLayer]);	
+	map.addLayers([layer,blankLayer, backgroundLayer,aerialLayer]);	
 	map.addControl(new OpenLayers.Control.LayerSwitcher());
 	var styles = "";
         this.legendButton(map_id,styles,layerName, map,wmsURL);
         this.getFeatureControl(wmsURL, layer, map);
         this.graticuleControl(map);
+	$("#map"+ map_id+" #OpenLayers_Control_MaximizeDiv").html("<b>+</b>");
+	//$("div").css("border","3px solid blue");
 
         //center map
         var center = new OpenLayers.LonLat(new Array(6.066243, 51.870927));
         var transformed = center.clone().transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:28992"));
         map.setCenter(transformed, 6);
 };
-
-
-
-
 
 
     this.mapComposer = function(map) {
@@ -318,7 +332,7 @@ return function () {
                 this.addWidget('area_2008');
             break;
             case "biomassa":
-                new BarChart('biomassa');
+                this.addWidget('biomassa');
             break;
 	    case "waterstand":
 		this.addWidget('water_level');

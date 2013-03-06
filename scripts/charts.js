@@ -61,15 +61,41 @@ define(["lib/highcharts"], function () {
 ];
 
 
+
+
+
 processdata = function (data){
 	var categories= new Array();
 	var values= new Array();
 	var valuesPredict = new Array();
+	var valuesTest = new Array();
+	console.log(data.H10);
+	console.log(data.H10[data.H10.length-1]);
+	
 	for (var i=data.H10.length-1;i>data.H10.length-722;i=i-1){
-		categories.unshift ( data.H10[i].datumdag+" - "+data.H10[i].datumtijd);
-		values.unshift (parseFloat(data.H10[i].waarde));
-		valuesPredict.unshift(null);
+		if(!data.H10[i].waarde){
+			for (var j=i;j>i-6;j=j-1){
+				try{
+				if(data.H10[j].waarde){
+					var dataPoint =	data.H10[j].waarde;
+					break;
+					
+				}}
+				catch(e){
+					var dataPoint=0;				
+				}
+			}
 		}
+		else{
+			var dataPoint=data.H10[i].waarde;
+		}
+		categories.unshift ( data.H10[i].datumdag+" - "+data.H10[i].datumtijd);
+		values.unshift (parseFloat(dataPoint));
+		valuesPredict.unshift(null);
+		valuesTest.unshift(null);
+		}
+	console.log(values);
+		console.log(valuesPredict);
 	for (var i=0;i<data.H10V.length;i++){
 		valuesPredict.push(parseFloat(data.H10V[i].waarde));
 }
@@ -88,7 +114,8 @@ processdata = function (data){
 
 	
 	var date = new Date (year,month,day,hour,minutes);
-	date.setDate(date.getDate()-4)
+	date.setDate(date.getDate()-5)
+	
 	return {date: date, values:values, valuesPredict:valuesPredict};
 };
 
@@ -98,27 +125,31 @@ processdata = function (data){
 
 // Method called in map-controller to draw chart 
 this.draw = function(){
-	if (this.data_source!='water_level'){
+	if (this.data_source!='water_level' && this.data_source!='biomassa'){
 		var data = this.determineDataSource();
 		this.drawpiechart(data);	
 		}
 	else{
+		if(this.data_source=='biomassa')	{
+		this.drawBarChart();
+		}
+		else{
 	// $.proxy passes scope of the function 
 	this.createLineChart($.proxy(function(output){
 		var outputProcessed = processdata(output);
 		this.drawLineChart(outputProcessed);	
 },this));
-	}
+	}}
 };	
 
 
 this.determineDataSource = function() {
 	var data_source = null;
         switch (this.data_source) {
-                   case 'area_1997':
+            case 'area_1997':
                 data_source = this.data_sources[0];
             break;
-                       case 'area_2005':
+                case 'area_2005':
                 data_source = this.data_sources[1];
             break;
             case 'area_2008':
@@ -145,16 +176,16 @@ this.drawLineChart=function (data) {
 		spacingRight : 20
 
 	},
-	"colors":[
-	'#4572A7', 
-	'#C9C9C9', 
+	"colors":[  
+	'#C9C9C9',
+	'#4572A7',
+	'#B5CA92',
 	'#89A54E', 
 	'#80699B', 
 	'#3D96AE', 
 	'#DB843D', 
 	'#92A8CD', 
-	'#A47D7C', 
-	'#B5CA92'
+	'#A47D7C'
 ],
 	"title": {
                 text: 'Waterstand t.o.v. NAP (in cm) Pannerdense Kop',
@@ -179,8 +210,8 @@ this.drawLineChart=function (data) {
                 enabled: false
             },
 	'plotOptions': {
-                area: {  
-                    lineWidth: 2,
+		area: {  
+                    lineWidth: 5,
                     marker: {
                         enabled: false,
                         states: {
@@ -200,17 +231,19 @@ this.drawLineChart=function (data) {
                 }
             },
 
-	"series": [{
+	"series": [
+
+{type: 'area',
+		name: 'Voorspelling waterstand',
+		pointInterval: 600*1000,
+                pointStart: Date.UTC(data.date.getFullYear(),data.date.getMonth(),data.date.getDate(),data.date.getHours(),data.date.getMinutes()),
+		data: data.valuesPredict},{
 		type: 'area',
 		name: 'Waterstand',
 		pointInterval: 600*1000,
                 pointStart: Date.UTC(data.date.getFullYear(),data.date.getMonth(),data.date.getDate(),data.date.getHours(),data.date.getMinutes()),
 		data: data.values
-	},{type: 'area',
-		name: 'Voorspelling waterstand',
-		pointInterval: 600*1000,
-                pointStart: Date.UTC(data.date.getFullYear(),data.date.getMonth(),data.date.getDate(),data.date.getHours(),data.date.getMinutes()),
-		data: data.valuesPredict}]
+	}]
 
 });
 };
@@ -255,14 +288,13 @@ this.drawLineChart=function (data) {
             }]
         });
     }
+
+
+this.drawBarChart = function() {
+    var renderTo = widget_controller.widgetContainer().attr('id');
+    $("#"+renderTo).html('<img src="media/plot.PNG"></img>');
+
 };
-
-
-
-
-var BarChart = function() {
-    var renderTo = widget_controller.widgetContainer();
-    $('<img src="media/plot.PNG"></img>').appendTo(renderTo);
 };
-});
+})
 
